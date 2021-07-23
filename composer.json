@@ -19,7 +19,7 @@
     "autoload": {
         "psr-4": {
             "Belivey\\GeoAdmin\\": "src/",
-            "Belivey\\GeoAdmin\\Database\\Seeds": "database/seeds/"
+            "Belivey\\GeoAdmin\\Database\\Seeds\\": "database/seeds/"
         }
     },
     "extra": {
