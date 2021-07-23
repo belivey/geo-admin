@@ -1,6 +1,6 @@
 <?php
 
-namespace Belivey\LaravelGeoAdmin\Models;
+namespace Belivey\GeoAdmin\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
