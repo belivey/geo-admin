@@ -2,7 +2,7 @@
 namespace Belivey\GeoAdmin\Database\Seeds;
 
 use Illuminate\Database\Seeder;
-use Belivey\LaravelGeoAdmin\Models\Region;
+use Belivey\GeoAdmin\Models\Region;
 
 class RegionSeeder extends Seeder
 {
