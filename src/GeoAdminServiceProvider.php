@@ -13,6 +13,7 @@ class GeoAdminServiceProvider extends ServiceProvider
   public function boot()
   {
     $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+    $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
     // $this->publishes([
     //   __DIR__.'/../config/laravel_geo_admin.php' => config_path('laravel_geo_admin.php'),
     // ], 'laravel-geo-admin-config');
