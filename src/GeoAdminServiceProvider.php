@@ -1,9 +1,9 @@
 <?php
-namespace Belivey\LaravelGeoAdmin;
+namespace Belivey\GeoAdmin;
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelGeoAdminServiceProvider extends ServiceProvider
+class GeoAdminServiceProvider extends ServiceProvider
 {
   /**
   * Publishes configuration file.
