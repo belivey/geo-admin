@@ -37,14 +37,11 @@ class L2L3Seeder extends Seeder
                         }
 
                         $meta = $Geometry->getDataArray();
-                        dd($meta);
                         
                         $coordinates = json_decode($Geometry->getGeoJSON())->coordinates;
-                        dd ($Geometry->getGeoJSON());
 
                         
                         if (json_decode($Geometry->getGeoJSON())->type == 'Polygon'){
-                            continue;
                             $geom = 'ST_PolygonFromText(\'POLYGON (';
 
                             foreach ($coordinates as $sub_index => $sub_poly) {
@@ -75,25 +72,9 @@ class L2L3Seeder extends Seeder
                             $geom.=')\', 4326)';;
                         }
                         $field = $org->fields()->create([
-                            'title' => $meta['F_NAME'],
-                            'geometry' => \DB::raw($geom),
-                            'area' => \DB::raw('ST_AREA('.$geom.')/10000'),
-                            'region_id' => $district->region_id,
-                            'district_id' => $district->id,
-                            'category' => 'arable',
+                            'title' => $meta['NAME'],
+                            'boundary' => \DB::raw($geom)
                         ]);
-                        Field::find($field->id)->setForecastPoint();
-
-                        $specie_id = $species[$meta['CROP']];
-                        // dd($specie_id);
-                        if ($specie_id){
-                            $field->sowCycles()->create([
-                                'specie_id' => $specie_id,
-                                'geometry' => \DB::raw($geom),
-                                'area' => \DB::raw('ST_AREA('.$geom.')/10000'),
-                                'seed_date' => $meta['SOW_DATE'] ? [$meta['SOW_DATE']] : ['2021-04-15', '2021-05-30'],
-                            ]);
-                        }
                     } catch (ShapefileException $e) {
                         // Handle some specific errors types or fallback to default
                         switch ($e->getErrorType()) {
@@ -127,6 +108,5 @@ class L2L3Seeder extends Seeder
             }
         }
     }
-    dd ($crops);
   }
 }
