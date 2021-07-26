@@ -9,10 +9,6 @@ trait HasGeometry {
     return json_decode($value);
   }
 
-  public function getWktAttribute() {
-    return $this->selectRaw('ST_AsWKT(boundary) as wkt')->find($this->id)->wkt;
-  }
-
   public function newQuery($excludeDeleted = true)
   {
       if (!empty($this->geometry) && $this->geometryAsText === true)
@@ -21,6 +17,7 @@ trait HasGeometry {
           foreach ($this->geometry as $column)
           {
               $raw .= 'ST_AsGeoJson(`' . $this->table . '`.`' . $column . '`) as `' . $column . '`, ';
+              $raw .= 'ST_AsWkt(`' . $this->table . '`.`' . $column . '`) as `wkt`, ';
           }
           $raw = substr($raw, 0, -2);
           return parent::newQuery($excludeDeleted)->addSelect('*', \DB::raw($raw));
