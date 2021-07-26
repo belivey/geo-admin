@@ -57,6 +57,7 @@ class L4Seeder extends Seeder
                             'country_id' => $country_id,
                             'county_id' => $county_id
                         ],[
+                            'osm_id' => $meta['OSM_ID'],
                             'boundary' => \DB::raw($geom)
                         ]);
                     } catch (ShapefileException $e) {

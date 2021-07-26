@@ -50,6 +50,7 @@ class L3Seeder extends Seeder
                             'title' => $meta['NAME'],
                             'country_id' => $country_id
                         ],[
+                            'osm_id' => $meta['OSM_ID'],
                             'boundary' => \DB::raw($geom)
                         ]);
                     } catch (ShapefileException $e) {

@@ -41,8 +41,9 @@ class L2Seeder extends Seeder
                         $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
                         
                         Country::updateOrCreate([
-                            'title' => $meta['NAME']
+                            'title' => $meta['NAME'],
                         ],[
+                            'osm_id' => $meta['OSM_ID'],
                             'boundary' => \DB::raw($geom)
                         ]);
                     } catch (ShapefileException $e) {
