@@ -10,7 +10,7 @@ trait HasGeometry {
   }
 
   public function getWktAttribute() {
-    return $this->selectRaw('ST_AsWKT(boundary) as wkt')->first()->wkt;
+    return $this->selectRaw('ST_AsWKT(boundary) as wkt')->find($this->id)->wkt;
   }
 
   public function newQuery($excludeDeleted = true)
