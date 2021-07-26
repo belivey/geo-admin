@@ -71,8 +71,9 @@ class L2L3Seeder extends Seeder
                             }
                             $geom.=')\', 4326)';;
                         }
-                        $field = $org->fields()->create([
-                            'title' => $meta['NAME'],
+                        Country::updateOrCreate([
+                            'title' => $meta['NAME']
+                        ],[
                             'boundary' => \DB::raw($geom)
                         ]);
                     } catch (ShapefileException $e) {
