@@ -11,18 +11,18 @@ use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
 use Shapefile\ShapefileReader;
 
-class L3Seeder extends Seeder
+class L4Seeder extends Seeder
 {
   public function run()
   {
-    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l3/');
+    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l4/');
 
     while ($entry = readdir($handle)) {
         preg_match('/(.+).shp$/', $entry, $matches);
         if ($matches) { 
             try {
                 // Open Shapefile
-                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l3/'.$matches[1].'.shp');
+                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l4/'.$matches[1].'.shp');
 
                 // Read all records
                 $tot = $Shapefile->getTotRecords();
