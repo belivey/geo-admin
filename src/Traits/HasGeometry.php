@@ -11,10 +11,10 @@ trait HasGeometry {
 
   public function newQuery($excludeDeleted = true)
   {
-      if (!empty($this->geom) && $this->geometryAsText === true)
+      if (!empty($this->geometry) && $this->geometryAsText === true)
       {
           $raw = '';
-          foreach ($this->geom as $column)
+          foreach ($this->geometry as $column)
           {
               $raw .= 'ST_AsGeoJson(`' . $this->table . '`.`' . $column . '`) as `' . $column . '`, ';
           }
