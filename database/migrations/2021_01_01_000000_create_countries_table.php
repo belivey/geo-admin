@@ -19,6 +19,8 @@ class CreateCountriesTable extends Migration
             $table->geometry('boundary')->nullable();
             $table->json('props')->nullable();
             $table->timestamps();
+
+            $table->spatialIndex('boundary');
         });
     }
 

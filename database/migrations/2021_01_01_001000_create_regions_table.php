@@ -24,6 +24,7 @@ class CreateRegionsTable extends Migration
 
             $table->index('country_id');
             $table->index('county_id');
+            $table->spatialIndex('boundary');
         });
     }
 

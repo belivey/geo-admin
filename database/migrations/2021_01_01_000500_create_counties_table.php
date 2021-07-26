@@ -22,6 +22,7 @@ class CreateCountiesTable extends Migration
             $table->timestamps();
 
             $table->index('country_id');
+            $table->spatialIndex('boundary');
         });
     }
 
