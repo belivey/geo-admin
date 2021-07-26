@@ -16,6 +16,7 @@ class CreateRegionsTable extends Migration
             $table->id();
             $table->foreignId('country_id')->constrains('countries')->nullable();
             $table->foreignId('county_id')->constrains('counties')->nullable();
+            $table->unsignedBigInteger('osm_id');
             $table->string('title');
             $table->geometry('boundary')->nullable();
             $table->json('props')->nullable();

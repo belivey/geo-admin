@@ -23,4 +23,8 @@ trait HasGeometry {
       }
       return parent::newQuery($excludeDeleted);
   }
+
+  public static function getByIntersect ($wkt) {
+    return self::whereRaw('ST_Intersects(boundary,'.$wkt.')')->first();
+  }
 } 

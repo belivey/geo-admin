@@ -21,8 +21,4 @@ class Country extends Model
   public function regions () {
     return $this->counties()->hasMany(Region::class);
   }
-
-  public static function getByIntersect ($wkt) {
-    return self::whereRaw('ST_Intersects(boundary,'.$wkt.')')->first();
-  }
 }

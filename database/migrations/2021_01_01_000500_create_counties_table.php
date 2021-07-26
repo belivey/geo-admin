@@ -15,6 +15,7 @@ class CreateCountiesTable extends Migration
         Schema::create('counties', function (Blueprint $table) {
             $table->id();
             $table->foreignId('country_id')->constrains('countries')->nullable();
+            $table->unsignedBigInteger('osm_id');
             $table->string('title');
             $table->geometry('boundary')->nullable();
             $table->json('props')->nullable();

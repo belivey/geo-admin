@@ -15,6 +15,7 @@ class CreateCountriesTable extends Migration
         Schema::create('countries', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->unsignedBigInteger('osm_id');
             $table->geometry('boundary')->nullable();
             $table->json('props')->nullable();
             $table->timestamps();
