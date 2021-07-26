@@ -27,4 +27,8 @@ trait HasGeometry {
   public static function getByContains ($wkt) {
     return self::whereRaw('ST_Contains(boundary,'.$wkt.')')->first();
   }
+
+  public static function getByIntersects ($wkt) {
+    return self::whereRaw('ST_Intersects(boundary,'.$wkt.')')->first();
+  }
 } 
