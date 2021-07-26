@@ -42,8 +42,8 @@ class L4Seeder extends Seeder
 
                         $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
 
-                        $country_id = Country::getByIntersect($geom)?->id;
-                        $county_id = County::getByIntersect($geom)?->id;
+                        $country_id = Country::getByContains($geom)?->id;
+                        $county_id = County::getByContains($geom)?->id;
                         
                         Region::updateOrCreate([
                             'title' => $meta['NAME'],

@@ -24,7 +24,7 @@ trait HasGeometry {
       return parent::newQuery($excludeDeleted);
   }
 
-  public static function getByIntersect ($wkt) {
-    return self::whereRaw('ST_Intersects(boundary,'.$wkt.')')->get('id');
+  public static function getByContains ($wkt) {
+    return self::whereRaw('ST_Contains(boundary,'.$wkt.')')->first();
   }
 } 
