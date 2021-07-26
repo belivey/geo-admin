@@ -19,7 +19,7 @@ class Country extends Model
     return $this->counties()->hasMany(Region::class);
   }
 
-  public static function getByContain ($wkt) {
-    return self::whereRaw('ST_Contains(boundary,'.$wkt.')')->first();
+  public static function getByIntersect ($wkt) {
+    return self::whereRaw('ST_Intersects(boundary,'.$wkt.')')->first();
   }
 }
