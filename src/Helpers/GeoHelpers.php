@@ -8,34 +8,38 @@ class GeoHelpers
     $coordinates = $geometry->coordinates;
 
     if ($geometry->type == 'Polygon'){
-        $wkt = 'ST_PolygonFromText(\'POLYGON (';
+      $wkt = 'ST_PolygonFromText(\'POLYGON (';
 
-        foreach ($coordinates as $sub_index => $sub_poly) {
-            $wkt .= $sub_index > 0 ? ',(' : '(';
+      foreach ($coordinates as $sub_index => $sub_poly) {
+        $wkt .= $sub_index > 0 ? ',(' : '(';
 
-            foreach ($sub_poly as $index => $point) {
-                $wkt .= $point[1].' '.$point[0].',';
-            }
-            $wkt = substr($wkt, 0, -1);
-            $wkt .= ')';
+        foreach ($sub_poly as $index => $point) {
+          $wkt .= $point[1].' '.$point[0].',';
         }
-        $wkt.=')\', 4326)';
-    } elseif ($geometry->type == 'MultiPolygon') {
-        $wkt = 'ST_MultiPolygonFromText(\'MULTIPOLYGON (';
-        foreach ($coordinates as $poly_index => $poly) {
-            $wkt .= $poly_index > 0 ? ',(' : '(';
-            foreach ($poly as $sub_index => $sub_poly) {
-                $wkt .= $sub_index > 0 ? ',(' : '(';
+        $wkt = substr($wkt, 0, -1);
+        $wkt .= ')';
+      }
+      $wkt.=')\', 4326)';
+      return $wkt;
+    } 
+    
+    if ($geometry->type == 'MultiPolygon') {
+      $wkt = 'ST_MultiPolygonFromText(\'MULTIPOLYGON (';
+      foreach ($coordinates as $poly_index => $poly) {
+        $wkt .= $poly_index > 0 ? ',(' : '(';
+        foreach ($poly as $sub_index => $sub_poly) {
+          $wkt .= $sub_index > 0 ? ',(' : '(';
 
-                foreach ($sub_poly as $index => $point) {
-                    $wkt .= $point[1].' '.$point[0].',';
-                }
-                $wkt = substr($wkt, 0, -1);
-                $wkt .= ')';
-            }
-            $wkt.=')';
+          foreach ($sub_poly as $index => $point) {
+            $wkt .= $point[1].' '.$point[0].',';
+          }
+          $wkt = substr($wkt, 0, -1);
+          $wkt .= ')';
         }
-        $wkt.=')\', 4326)';;
+        $wkt.=')';
+      }
+      $wkt.=')\', 4326)';
+      return $wkt;
     }
   }
 }
