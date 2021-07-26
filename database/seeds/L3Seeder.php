@@ -10,18 +10,18 @@ use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
 use Shapefile\ShapefileReader;
 
-class L2L3Seeder extends Seeder
+class L3Seeder extends Seeder
 {
   public function run()
   {
-    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l2/');
+    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l3/');
 
     while ($entry = readdir($handle)) {
         preg_match('/(.+).shp$/', $entry, $matches);
         if ($matches) { 
             try {
                 // Open Shapefile
-                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l2/'.$matches[1].'.shp');
+                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l3/'.$matches[1].'.shp');
 
                 // Read all records
                 $tot = $Shapefile->getTotRecords();
@@ -40,6 +40,8 @@ class L2L3Seeder extends Seeder
                         $meta = $Geometry->getDataArray();
 
                         $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
+
+                        dd(Country::intersects($geom));
                         
                         Country::updateOrCreate([
                             'title' => $meta['NAME']
