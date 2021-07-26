@@ -4,10 +4,12 @@ namespace Belivey\GeoAdmin\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Belivey\GeoAdmin\Models\HasGeometry;
 
 class County extends Model
 {
-  use HasFactory;
+  use HasFactory, HasGeometry;
 
   protected $guarded = [];
+  protected $geometry = ['boundary'];
 }
