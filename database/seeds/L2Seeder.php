@@ -3,7 +3,6 @@ namespace Belivey\GeoAdmin\Database\Seeds;
 
 use Illuminate\Database\Seeder;
 use Belivey\GeoAdmin\Models\Country;
-use Belivey\GeoAdmin\Models\County;
 use Belivey\GeoAdmin\Helpers\GeoHelpers;
 
 use Shapefile\Shapefile;

@@ -41,10 +41,11 @@ class L3Seeder extends Seeder
 
                         $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
 
-                        dd(Country::getByContain($geom)->id);
+                        $country_id = Country::getByContain($geom)?->id;
                         
                         Country::updateOrCreate([
-                            'title' => $meta['NAME']
+                            'title' => $meta['NAME'],
+                            'country_id' => $country_id
                         ],[
                             'boundary' => \DB::raw($geom)
                         ]);
