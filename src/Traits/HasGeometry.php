@@ -17,7 +17,6 @@ trait HasGeometry {
           foreach ($this->geometry as $column)
           {
               $raw .= 'ST_AsGeoJson(`' . $this->table . '`.`' . $column . '`) as `' . $column . '`, ';
-              $raw .= 'ST_AsWkt(`' . $this->table . '`.`' . $column . '`) as `wkt`, ';
           }
           $raw = substr($raw, 0, -2);
           return parent::newQuery($excludeDeleted)->addSelect('*', \DB::raw($raw));
@@ -26,6 +25,6 @@ trait HasGeometry {
   }
 
   public static function getByIntersect ($wkt) {
-    return self::whereRaw('ST_Intersects(boundary,'.$wkt.')')->first();
+    return self::whereRaw('ST_Intersects(boundary,'.$wkt.')')->get('id');
   }
 } 
