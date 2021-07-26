@@ -12,7 +12,7 @@ class L2L3Seeder extends Seeder
 {
   public function run()
   {
-    $handle = opendir('/vendor/belivey/geo-admin/database/seeds/data/l2/');
+    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l2/');
     $crops = [];
 
     // dd($handle);
@@ -21,7 +21,7 @@ class L2L3Seeder extends Seeder
         if ($matches) { 
             try {
                 // Open Shapefile
-                $Shapefile = new ShapefileReader('/vendor/belivey/geo-admin/database/seeds/data/l2/'.$matches[1].'.shp');
+                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l2/'.$matches[1].'.shp');
                 dd($Shapefile);
                 // Read all records
                 $tot = $Shapefile->getTotRecords();
