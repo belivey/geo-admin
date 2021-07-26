@@ -5,7 +5,7 @@ namespace Belivey\GeoAdmin\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use Belivey\GeoAdmin\Models\HasGeometry;
+use Belivey\GeoAdmin\Traits\HasGeometry;
 
 class Country extends Model
 {
