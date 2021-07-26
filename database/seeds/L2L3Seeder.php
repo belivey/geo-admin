@@ -4,6 +4,7 @@ namespace Belivey\GeoAdmin\Database\Seeds;
 use Illuminate\Database\Seeder;
 use Belivey\GeoAdmin\Models\Country;
 use Belivey\GeoAdmin\Models\County;
+use Belivey\GeoAdmin\Helpers\GeoHelpers;
 
 use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
@@ -37,40 +38,9 @@ class L2L3Seeder extends Seeder
                         }
 
                         $meta = $Geometry->getDataArray();
+
+                        $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
                         
-                        $coordinates = json_decode($Geometry->getGeoJSON())->coordinates;
-
-                        
-                        if (json_decode($Geometry->getGeoJSON())->type == 'Polygon'){
-                            $geom = 'ST_PolygonFromText(\'POLYGON (';
-
-                            foreach ($coordinates as $sub_index => $sub_poly) {
-                                $geom .= $sub_index > 0 ? ',(' : '(';
-
-                                foreach ($sub_poly as $index => $point) {
-                                    $geom .= $point[1].' '.$point[0].',';
-                                }
-                                $geom = substr($geom, 0, -1);
-                                $geom .= ')';
-                            }
-                            $geom.=')\', 4326)';
-                        } elseif (json_decode($Geometry->getGeoJSON())->type == 'MultiPolygon') {
-                            $geom = 'ST_MultiPolygonFromText(\'MULTIPOLYGON (';
-                            foreach ($coordinates as $poly_index => $poly) {
-                                $geom .= $poly_index > 0 ? ',(' : '(';
-                                foreach ($poly as $sub_index => $sub_poly) {
-                                    $geom .= $sub_index > 0 ? ',(' : '(';
-
-                                    foreach ($sub_poly as $index => $point) {
-                                        $geom .= $point[1].' '.$point[0].',';
-                                    }
-                                    $geom = substr($geom, 0, -1);
-                                    $geom .= ')';
-                                }
-                                $geom.=')';
-                            }
-                            $geom.=')\', 4326)';;
-                        }
                         Country::updateOrCreate([
                             'title' => $meta['NAME']
                         ],[
