@@ -9,6 +9,10 @@ trait HasGeometry {
     return json_decode($value);
   }
 
+  public function getWktAttribute() {
+    return $this->selectRaw('ST_AsWKT(boundary) as wkt')->first()->wkt;
+  }
+
   public function newQuery($excludeDeleted = true)
   {
       if (!empty($this->geometry) && $this->geometryAsText === true)
