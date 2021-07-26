@@ -25,10 +25,10 @@ trait HasGeometry {
   }
 
   public static function getByContains ($wkt) {
-    return self::whereRaw('ST_Contains(boundary,'.$wkt.')')->first();
+    return self::whereRaw('MBRContains(boundary,'.$wkt.')')->first();
   }
 
   public static function getByIntersects ($wkt) {
-    return self::whereRaw('ST_Intersects(boundary,'.$wkt.')')->first();
+    return self::whereRaw('MBRIntersects(boundary,'.$wkt.')')->first();
   }
 } 
