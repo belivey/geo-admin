@@ -43,7 +43,7 @@ class L3Seeder extends Seeder
 
                         $country_id = Country::getByContain($geom)?->id;
                         
-                        Country::updateOrCreate([
+                        County::updateOrCreate([
                             'title' => $meta['NAME'],
                             'country_id' => $country_id
                         ],[
