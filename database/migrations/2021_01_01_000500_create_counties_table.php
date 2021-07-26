@@ -17,7 +17,7 @@ class CreateCountiesTable extends Migration
             $table->foreignId('country_id')->constrains('countries')->nullable();
             $table->unsignedBigInteger('osm_id');
             $table->string('title');
-            $table->geometry('boundary')->nullable();
+            $table->geometry('boundary');
             $table->json('props')->nullable();
             $table->timestamps();
 
