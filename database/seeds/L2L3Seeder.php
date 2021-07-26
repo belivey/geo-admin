@@ -2,7 +2,8 @@
 namespace Belivey\GeoAdmin\Database\Seeds;
 
 use Illuminate\Database\Seeder;
-use Belivey\GeoAdmin\Models\Region;
+use Belivey\GeoAdmin\Models\Country;
+use Belivey\GeoAdmin\Models\County;
 
 use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
@@ -13,19 +14,17 @@ class L2L3Seeder extends Seeder
   public function run()
   {
     $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l2/');
-    $crops = [];
 
-    // dd($handle);
     while ($entry = readdir($handle)) {
         preg_match('/(.+).shp$/', $entry, $matches);
         if ($matches) { 
             try {
                 // Open Shapefile
                 $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l2/'.$matches[1].'.shp');
-                dd($Shapefile);
+
                 // Read all records
                 $tot = $Shapefile->getTotRecords();
-                dd ($tot);
+
                 for ($i = 1; $i <= $tot; ++$i) {
                     try {
                         // Manually set current record. Don't forget this!
@@ -39,10 +38,7 @@ class L2L3Seeder extends Seeder
 
                         $meta = $Geometry->getDataArray();
                         dd($meta);
-                        if ($meta['CROP']=="Пар") print_r($meta);
-                        $crops[$meta['CROP']] = null;
-                        $org = Organization::find($org_id);
-                        $district = District::find($district_id);
+                        
                         $coordinates = json_decode($Geometry->getGeoJSON())->coordinates;
                         dd ($Geometry->getGeoJSON());
 
