@@ -41,14 +41,11 @@ class L5Seeder extends Seeder
                             ParseHelpers::regionAddr($meta),
                             $geom
                         )?->id;
-                        // $region_id = Region::getByGeometry($geom)?->id;
-                        $district_type = ParseHelpers::getDistrictType(ParseHelpers::status($meta));
 
                         DistrictUnion::updateOrCreate([
                             'title' => $meta['NAME'],
                             'region_id' => $region_id
                         ],[
-                            'type' => $district_type,
                             'osm_id' => $meta['OSM_ID'],
                             'boundary' => \DB::raw($geom)
                         ]);
