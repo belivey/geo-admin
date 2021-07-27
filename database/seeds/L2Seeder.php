@@ -4,6 +4,7 @@ namespace Belivey\GeoAdmin\Database\Seeds;
 use Illuminate\Database\Seeder;
 use Belivey\GeoAdmin\Models\Country;
 use Belivey\GeoAdmin\Helpers\GeoHelpers;
+use Belivey\GeoAdmin\Helpers\ParseHelpers;
 
 use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
@@ -32,13 +33,8 @@ class L2Seeder extends Seeder
                         // Fetch a Geometry
                         $Geometry = $Shapefile->fetchRecord();
                         // Skip deleted records
-                        if ($Geometry->isDeleted()) {
-                            continue;
-                        }
-
-                        $meta = $Geometry->getDataArray();
-
-                        $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
+                        list($geom, $meta) = GeoHelpers::splitGeometry($Geometry);
+                        if (!$geom) continue;
                         
                         Country::updateOrCreate([
                             'title' => $meta['NAME'],

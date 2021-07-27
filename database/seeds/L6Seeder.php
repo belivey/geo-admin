@@ -33,17 +33,16 @@ class L6Seeder extends Seeder
                         $Shapefile->setCurrentRecord($i);
                         // Fetch a Geometry
                         $Geometry = $Shapefile->fetchRecord();
-                        // Skip deleted records
-                        if ($Geometry->isDeleted()) {
-                            continue;
-                        }
 
-                        $meta = $Geometry->getDataArray();
+                        list($geom, $meta) = GeoHelpers::splitGeometry($Geometry);
+                        if (!$geom) continue;
 
-                        $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
-                        $region_id = Region::getByTitle($meta['ADDR_REGIO'])?->id;
-                        // $region_id = Region::getByGeometry($geom)?->id;
-                        $district_type = ParseHelpers::getDistrictType($meta['OFFICIAL_S']);
+                        $region_id = Region::getByAny(
+                            ParseHelpers::regionAddr($meta),
+                            $geom
+                        )?->id;
+
+                        $district_type = ParseHelpers::getDistrictType(ParseHelpers::status($meta));
 
                         District::updateOrCreate([
                             'title' => $meta['NAME'],

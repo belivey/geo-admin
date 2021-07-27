@@ -29,6 +29,8 @@ trait HasGeometry {
   }
 
   public static function getByIntersects ($wkt) {
+    // ToDo Вернуться после релиза MySQL 8.0.27
+
     // return self::selectRaw('ST_Area(ST_Intersection(boundary,'.$wkt.')) as area')
     //   ->orderBy('area', 'desc')->first();
     return self::whereRaw('MBRIntersects(boundary,'.$wkt.')')->first();
@@ -38,5 +40,11 @@ trait HasGeometry {
     $result = self::getByContains($wkt);
     if ($result) return $result;
     return self::getByIntersects($wkt);
+  }
+
+  public static function getByAny($title, $geom) {
+    $result = self::getByTitle($title);
+    if ($result) return $result;
+    return self::getByGeometry($geom);
   }
 } 

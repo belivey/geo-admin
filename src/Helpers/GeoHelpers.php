@@ -42,4 +42,19 @@ class GeoHelpers
       return $wkt;
     }
   }
+
+  public static function splitGeometry ($Geometry) {
+    if ($Geometry->isDeleted()) {
+      return [null, null];
+    }
+
+    $meta = $Geometry->getDataArray();
+
+    if (!ParseHelpers::isValid($meta)) {
+      return [null, null];
+    }
+
+    $geom = self::wktFromJson($Geometry->getGeoJSON());
+    return [$geom, $meta];
+  }
 }

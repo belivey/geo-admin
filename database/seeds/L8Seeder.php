@@ -2,9 +2,10 @@
 namespace Belivey\GeoAdmin\Database\Seeds;
 
 use Illuminate\Database\Seeder;
-use Belivey\GeoAdmin\Models\Country;
 use Belivey\GeoAdmin\Models\Region;
-use Belivey\GeoAdmin\Models\County;
+use Belivey\GeoAdmin\Models\District;
+use Belivey\GeoAdmin\Models\DistrictUnion;
+use Belivey\GeoAdmin\Models\SubDistrict;
 use Belivey\GeoAdmin\Helpers\GeoHelpers;
 use Belivey\GeoAdmin\Helpers\ParseHelpers;
 
@@ -12,18 +13,18 @@ use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
 use Shapefile\ShapefileReader;
 
-class L4Seeder extends Seeder
+class L8Seeder extends Seeder
 {
   public function run()
   {
-    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l4/');
+    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l8/');
 
     while ($entry = readdir($handle)) {
         preg_match('/(.+).shp$/', $entry, $matches);
         if ($matches) { 
             try {
                 // Open Shapefile
-                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l4/'.$matches[1].'.shp');
+                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l8/'.$matches[1].'.shp');
 
                 // Read all records
                 $tot = $Shapefile->getTotRecords();
@@ -38,17 +39,32 @@ class L4Seeder extends Seeder
                         list($geom, $meta) = GeoHelpers::splitGeometry($Geometry);
                         if (!$geom) continue;
 
-                        $country_id = Country::getByGeometry($geom)?->id;
-                        $county_id = County::getByGeometry($geom)?->id;
-                        
-                        Region::updateOrCreate([
+                        $region_id = Region::getByAny(
+                            ParseHelpers::regionAddr($meta),
+                            $geom
+                        )?->id;
+
+                        $district_id = District::getByAny(
+                            ParseHelpers::districtAddr($meta),
+                            $geom
+                        )?->id;
+
+                        $district_union_id = DistrictUnion::getByGeometry($geom)?->id;
+
+                        $type = ParseHelpers::getSubDistrictType(ParseHelpers::status($meta));
+
+                        SubDistrict::updateOrCreate([
                             'title' => $meta['NAME'],
-                            'country_id' => $country_id,
-                            'county_id' => $county_id
+                            'region_id' => $region_id
                         ],[
+                            'type' => $type,
+                            'district_id' => $district_id,
+                            'district_union_id' => $district_union_id,
                             'osm_id' => $meta['OSM_ID'],
                             'boundary' => \DB::raw($geom)
                         ]);
+                        
+                        
                     } catch (ShapefileException $e) {
                         // Handle some specific errors types or fallback to default
                         switch ($e->getErrorType()) {
