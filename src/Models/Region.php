@@ -13,8 +13,4 @@ class Region extends Model
   // Disable Laravel's mass assignment protection
   protected $guarded = [];
   protected $geometry = ['boundary'];
-
-  public static function getByTitle ($title) {
-    return self::where('title', $title)->first();
-  }
 }

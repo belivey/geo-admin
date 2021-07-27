@@ -36,6 +36,10 @@ trait HasGeometry {
     return self::whereRaw('MBRIntersects(boundary,'.$wkt.')')->first();
   }
 
+  public static function getByTitle ($title) {
+    return self::where('title', $title)->first();
+  }
+
   public static function getByGeometry ($wkt) {
     $result = self::getByContains($wkt);
     if ($result) return $result;
