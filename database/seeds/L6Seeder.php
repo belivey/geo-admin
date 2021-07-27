@@ -40,6 +40,8 @@ class L6Seeder extends Seeder
 
                         $meta = $Geometry->getDataArray();
 
+                        dd($meta);
+
                         $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
                         $region_id = Region::getByGeometry($geom)?->id;
                         $district_type = ParseHelpers::getDistrictType($meta['OFFICIAL_STATUS']);
