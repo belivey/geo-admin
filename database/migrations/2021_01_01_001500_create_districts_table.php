@@ -14,7 +14,7 @@ class CreateDistrictsTable extends Migration
     {
         Schema::create('districts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('region')->constrains('regions')->nullable();
+            $table->foreignId('region_id')->constrains('regions')->nullable();
             $table->enum('type', ['municipal', 'urban'])->nullable();
             $table->unsignedBigInteger('osm_id')->nullable();
             $table->string('title');
