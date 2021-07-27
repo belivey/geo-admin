@@ -41,8 +41,8 @@ class L6Seeder extends Seeder
                         $meta = $Geometry->getDataArray();
 
                         $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
-                        // $region_id = Region::getByTitle($meta['ADDR_REGIO'])?->id;
-                        $region_id = Region::getByGeometry($geom)?->id;
+                        $region_id = Region::getByTitle($meta['ADDR_REGIO'])?->id;
+                        // $region_id = Region::getByGeometry($geom)?->id;
                         $district_type = ParseHelpers::getDistrictType($meta['OFFICIAL_S']);
 
                         District::updateOrCreate([
