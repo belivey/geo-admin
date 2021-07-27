@@ -12,11 +12,11 @@ class ParseHelpers
   ];
 
   public static function getDistrictType ($status) {
-    if (in_array($status, self::municipalDistricts)) {
+    if (in_array($status, self::$municipalDistricts)) {
       return 'municipal';
     }
 
-    if (in_array($status, self::urbans)) {
+    if (in_array($status, self::$urbans)) {
       return 'urban';
     }
 
