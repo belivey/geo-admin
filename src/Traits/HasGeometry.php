@@ -29,7 +29,7 @@ trait HasGeometry {
   }
 
   public static function getByIntersects ($wkt) {
-    return self::selectRaw('ST_Area(ST_Intersects(boundary,'.$wkt.')) as area')
+    return self::selectRaw('ST_Area(ST_Intersection(boundary,'.$wkt.')) as area')
       ->orderBy('area')->first();
     return self::whereRaw('MBRIntersects(boundary,'.$wkt.')')->first();
   }
