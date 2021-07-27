@@ -36,13 +36,13 @@ class L5Seeder extends Seeder
 
                         list($geom, $meta) = GeoHelpers::splitGeometry($Geometry);
                         if (!$geom) continue;
-                        
+
                         $region_id = Region::getByAny(
                             ParseHelpers::regionAddr($meta),
                             $geom
                         )?->id;
                         // $region_id = Region::getByGeometry($geom)?->id;
-                        $district_type = ParseHelpers::getDistrictType($meta['OFFICIAL_S']);
+                        $district_type = ParseHelpers::getDistrictType(ParseHelpers::status($meta));
 
                         DistrictUnion::updateOrCreate([
                             'title' => $meta['NAME'],
