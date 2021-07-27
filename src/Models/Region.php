@@ -13,4 +13,9 @@ class Region extends Model
   // Disable Laravel's mass assignment protection
   protected $guarded = [];
   protected $geometry = ['boundary'];
+
+  public function districts ()
+  {
+    return $this->hasMany(District::class, 'region_id');
+  }
 }
