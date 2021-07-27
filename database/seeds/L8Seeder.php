@@ -44,22 +44,34 @@ class L8Seeder extends Seeder
                             $geom
                         )?->id;
 
-                        $district_id = District::getByAny(
+                        $district = District::getByAny(
                             ParseHelpers::districtAddr($meta),
                             $geom
-                        )?->id;
+                        );
 
-                        $district_union_id = DistrictUnion::getByGeometry($geom)?->id;
+                        $district_union = DistrictUnion::getByGeometry($geom);
+
+                        if ($district) {
+                            $region = $district->region;
+                        } elseif ($district_union) {
+                            $region = $district_union->region;
+                        } else {
+                            $region = Region::getByAny(
+                                ParseHelpers::regionAddr($meta),
+                                $geom
+                            );
+                        }
+
 
                         $type = ParseHelpers::getSubDistrictType(ParseHelpers::status($meta));
 
                         SubDistrict::updateOrCreate([
                             'title' => $meta['NAME'],
-                            'region_id' => $region_id
+                            'region_id' => $region?->id
                         ],[
                             'type' => $type,
-                            'district_id' => $district_id,
-                            'district_union_id' => $district_union_id,
+                            'district_id' => $district?->id,
+                            'district_union_id' => $district_union?->id,
                             'osm_id' => $meta['OSM_ID'],
                             'boundary' => \DB::raw($geom)
                         ]);

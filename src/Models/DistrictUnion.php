@@ -10,7 +10,10 @@ class DistrictUnion extends Model
 {
   use HasFactory, HasGeometry;
 
-  // Disable Laravel's mass assignment protection
   protected $guarded = [];
   protected $geometry = ['boundary'];
+
+  public function region () {
+    return $this->belongsTo(Region::class);
+  }
 }
