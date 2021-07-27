@@ -14,6 +14,6 @@ class DistrictUnion extends Model
   protected $geometry = ['boundary'];
 
   public function region () {
-    return $this->belongsTo(Region::class);
+    return $this->belongsTo(Region::class, 'region_id');
   }
 }
