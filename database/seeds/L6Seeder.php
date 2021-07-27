@@ -2,26 +2,27 @@
 namespace Belivey\GeoAdmin\Database\Seeds;
 
 use Illuminate\Database\Seeder;
-use Belivey\GeoAdmin\Models\Country;
-use Belivey\GeoAdmin\Models\County;
+use Belivey\GeoAdmin\Models\Region;
+use Belivey\GeoAdmin\Models\District;
 use Belivey\GeoAdmin\Helpers\GeoHelpers;
+use Belivey\GeoAdmin\Helpers\ParseHelpers;
 
 use Shapefile\Shapefile;
 use Shapefile\ShapefileException;
 use Shapefile\ShapefileReader;
 
-class L3Seeder extends Seeder
+class L6Seeder extends Seeder
 {
   public function run()
   {
-    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l3/');
+    $handle = opendir('vendor/belivey/geo-admin/database/seeds/data/l6/');
 
     while ($entry = readdir($handle)) {
         preg_match('/(.+).shp$/', $entry, $matches);
         if ($matches) { 
             try {
                 // Open Shapefile
-                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l3/'.$matches[1].'.shp');
+                $Shapefile = new ShapefileReader('vendor/belivey/geo-admin/database/seeds/data/l6/'.$matches[1].'.shp');
 
                 // Read all records
                 $tot = $Shapefile->getTotRecords();
@@ -40,16 +41,19 @@ class L3Seeder extends Seeder
                         $meta = $Geometry->getDataArray();
 
                         $geom = GeoHelpers::wktFromJson($Geometry->getGeoJSON());
+                        $region_id = Region::getByGeometry($geom)?->id;
+                        $district_type = ParseHelpers::getDistrictType($meta['OFFICIAL_STATUS']);
 
-                        $country_id = Country::getByGeometry($geom)?->id;
-
-                        County::updateOrCreate([
+                        District::updateOrCreate([
                             'title' => $meta['NAME'],
-                            'country_id' => $country_id
+                            'region_id' => $region_id
                         ],[
+                            'type' => $district_type,
                             'osm_id' => $meta['OSM_ID'],
                             'boundary' => \DB::raw($geom)
                         ]);
+                        
+                        
                     } catch (ShapefileException $e) {
                         // Handle some specific errors types or fallback to default
                         switch ($e->getErrorType()) {
